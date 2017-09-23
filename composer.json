@@ -1,0 +1,21 @@
+{
+    "name": "xavoc/form-builder",
+    "description": "Form Builder with Editable GUI for ATK Forms",
+    "type": "library",
+    "require": {
+        "atk4/ui": "^1.1"
+    },
+    "autoload":{
+        "psr-0":{
+            "": "lib/"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gowrav Vishwakarma",
+            "email": "gowravvishwakarma@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
