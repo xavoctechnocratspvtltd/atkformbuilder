@@ -87,13 +87,6 @@ class Reference_One extends Reference
     public $mandatory = false;
 
     /**
-     * Is field required? By default fields are not required.
-     *
-     * @var bool|string
-     */
-    public $required = false;
-
-    /**
      * Should we use typecasting when saving/loading data to/from persistence.
      *
      * Value can be array [$typecast_save_callback, $typecast_load_callback].
@@ -171,7 +164,6 @@ class Reference_One extends Reference
                 'caption'           => $this->caption,
                 'ui'                => $this->ui,
                 'mandatory'         => $this->mandatory,
-                'required'          => $this->required,
                 'typecast'          => $this->typecast,
                 'serialize'         => $this->serialize,
                 'persist_format'    => $this->persist_format,

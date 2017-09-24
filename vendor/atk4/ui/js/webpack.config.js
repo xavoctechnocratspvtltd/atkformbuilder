@@ -34,7 +34,7 @@ const config = {
         test: /(\.jsx|\.js)$/,
         loader: 'babel-loader',
         exclude: /(node_modules|bower_components)/
-      }//,
+      },
       // {
       //   test: /(\.jsx|\.js)$/,
       //   loader: "eslint-loader",
@@ -42,12 +42,14 @@ const config = {
       // }
     ]
   },
-  externals: {jquery: 'jQuery'},
   resolve: {
     modules: [path.resolve('./src'), path.join(__dirname, 'node_modules')],
     extensions: ['.json', '.js'],
   },
-  plugins: plugins
+  plugins: plugins,
+  externals: {
+      'jquery': 'jQuery'
+  }
 };
 
 module.exports = config;

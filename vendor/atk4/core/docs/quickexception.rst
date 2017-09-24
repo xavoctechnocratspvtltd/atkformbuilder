@@ -19,6 +19,6 @@ Properties
 Methods
 =======
 
-.. php:method:: exception($message)
+.. php:meth:: exception($message)
 
     Calls exception.

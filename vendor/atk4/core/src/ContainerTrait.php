@@ -59,16 +59,12 @@ trait ContainerTrait
     {
         if (isset($this->_factoryTrait)) {
             // Factory allows us to pass string-type objects
-            $args1 = $args;
-            unset($args1['desired_name']);
-            $obj = $this->factory($obj, $args1);
+            $obj = $this->factory($obj, $args);
         }
         $obj = $this->_add_Container($obj, $args);
 
         if (isset($obj->_initializerTrait)) {
-            if (!$obj->_initialized) {
-                $obj->init();
-            }
+            $obj->init();
             if (!$obj->_initialized) {
                 throw new Exception([
                     'You should call parent::init() when you override initializer',

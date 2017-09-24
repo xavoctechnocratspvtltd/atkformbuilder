@@ -663,7 +663,7 @@ class View implements jsExpressionable
             }
         }
 
-        if (isset($this->content) && $this->content !== false) {
+        if ($this->content) {
             $this->template->append('Content', $this->content);
         }
     }
@@ -701,41 +701,6 @@ class View implements jsExpressionable
         return
             $this->getJS($force_echo).
             $this->template->render();
-    }
-
-    /**
-     * Render View using json format.
-     *
-     * @param bool $force_echo
-     *
-     * @return string
-     */
-    public function renderJSON($force_echo = true)
-    {
-        try {
-            $this->renderAll();
-
-            return json_encode(['success' => true,
-                                'message' => 'Success',
-                                'atkjs'   => $this->getJS($force_echo),
-                                'html'    => $this->template->render(),
-                                'id'      => $this->name, ]);
-        } catch (\Exception $exception) {
-            $l = $this->add(new self());
-            if ($exception instanceof \atk4\core\Exception) {
-                $l->template->setHTML('Content', $exception->getHTML());
-            } elseif ($exception instanceof \Error) {
-                $l->add(new self(['ui'=> 'message', get_class($exception).': '.
-                                                            $exception->getMessage().' (in '.$exception->getFile().':'.$exception->getLine().')',
-                    'error', ]));
-                $l->add(new Text())->set(nl2br($exception->getTraceAsString()));
-            } else {
-                $l->add(new self(['ui'=>'message', get_class($exception).': '.$exception->getMessage(), 'error']));
-            }
-
-            return json_encode(['success' => false,
-                                'message' => $l->getHTML(), ]);
-        }
     }
 
     /**
@@ -899,13 +864,11 @@ class View implements jsExpressionable
         }
 
         $actions = [];
-        $actions['preventDefault'] = true;
-        $actions['stopPropagation'] = true;
         if (isset($defaults['preventDefault'])) {
-            $actions['preventDefault'] = $defaults['preventDefault'];
+            $actions['preventDefault'] = true;
         }
         if (isset($defaults['stopPropagation'])) {
-            $actions['stopPropagation'] = $defaults['stopPropagation'];
+            $actions['stopPropagation'] = true;
         }
 
         if (is_callable($action) || (is_array($action) && isset($action[0]) && is_callable($action[0]))) {

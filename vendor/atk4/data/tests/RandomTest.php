@@ -25,7 +25,7 @@ class Model_Item extends \atk4\data\Model
     {
         parent::init();
         $this->addField('name');
-        $this->hasOne('parent_item_id', '\atk4\data\tests\Model_Item')
+        $this->hasOne('parent_item_id', '\atk4\data\tests\Item')
             ->addTitle();
     }
 }
@@ -242,7 +242,6 @@ class RandomSQLTests extends SQLTestCase
         $this->setDB($a);
 
         $m['name'] = 'Peter';
-
         try {
             $m->save();
             $e = null;
@@ -295,7 +294,7 @@ class RandomSQLTests extends SQLTestCase
         $db = new Persistence_SQL($this->db->connection);
         $m = new Model_Item($db);
 
-        $m->hasOne('Person', 'atk4/data/tests/Model_Person');
+        $m->hasOne('Person', 'atk4/data/tests/Person');
         $person = $m->ref('Person');
     }
 }

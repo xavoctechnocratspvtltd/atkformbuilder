@@ -354,7 +354,6 @@ class Field
             return $value;
         } catch (Exception $e) {
             $e->addMoreInfo('field', $this);
-
             throw $e;
         }
     }

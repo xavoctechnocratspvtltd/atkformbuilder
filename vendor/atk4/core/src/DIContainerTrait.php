@@ -42,23 +42,15 @@ trait DIContainerTrait
      * developer to pass Dependency Injector Container.
      *
      * @param array $properties
+     * @param bool  $strict     - should we raise exceptions?
      */
-    public function setDefaults($properties = [])
+    public function setDefaults($properties = [], $strict = false)
     {
         if ($properties === null) {
             $properties = [];
         }
 
         foreach ($properties as $key => $val) {
-            if (is_numeric($key)) {
-                throw new Exception([
-                    'Numeric property names are not allowed',
-                    'object'  => $this,
-                    'property'=> $key,
-                    'value'   => $val,
-                ]);
-            }
-
             if (property_exists($this, $key)) {
                 if (is_array($val)) {
                     $this->$key = array_merge(isset($this->$key) && is_array($this->$key) ? $this->$key : [], $val);
@@ -66,26 +58,30 @@ trait DIContainerTrait
                     $this->$key = $val;
                 }
             } else {
-                $this->setMissingProperty($key, $val);
+                $this->setMissingProperty($key, $val, $strict);
             }
         }
     }
 
     /**
      * Sets object property.
-     * Throws exception.
+     * Throws exception if $strict.
      *
      * @param mixed $key
      * @param mixed $value
      * @param bool  $strict
      */
-    protected function setMissingProperty($key, $value)
+    protected function setMissingProperty($key, $value, $strict = false)
     {
-        throw new Exception([
-            'Property for specified object is not defined',
-            'object'  => $this,
-            'property'=> $key,
-            'value'   => $value,
-        ]);
+        if ($strict) {
+            throw new Exception([
+                'Property for specified object is not defined',
+                'object'  => $this,
+                'property'=> $key,
+                'value'   => $value,
+            ]);
+        }
+
+        $this->key = $value;
     }
 }

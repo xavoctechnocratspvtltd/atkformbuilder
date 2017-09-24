@@ -25,14 +25,14 @@ class jsReload implements jsExpressionable
 
         $this->cb = $this->view->_add(new CallbackLater());
         $this->cb->set(function () {
-            $this->view->app->terminate($this->view->renderJSON());
+            $this->view->app->terminate($this->view->render());
         });
     }
 
     public function jsRender()
     {
         $final = (new jQuery($this->view))
-          ->atkReloadView(
+          ->reloadView(
           [
               'uri'         => $this->cb->getURL(),
               'uri_options' => $this->args,

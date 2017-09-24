@@ -1,9 +1,7 @@
 
-==============================
-Dependency Injection Container
-==============================
-
-.. php:trait:: DIContainerTrait
+===============================
+Dependency Injection Containers
+===============================
 
 Agile Core implements basic support for Dependency Injection Container.
 

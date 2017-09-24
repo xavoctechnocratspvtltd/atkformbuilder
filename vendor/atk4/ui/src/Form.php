@@ -351,9 +351,6 @@ class Form extends View //implements \ArrayAccess - temporarily so that our buil
         case 'boolean':
             return new FormField\Checkbox($arg);
 
-        case 'text':
-            return new FormField\Textarea($arg);
-
         case 'string':
             return new FormField\Line($arg);
 
@@ -431,7 +428,7 @@ class Form extends View //implements \ArrayAccess - temporarily so that our buil
         $this->add(new View(['element'=>'input']))
             ->setAttr('name', $cb->name)
             ->setAttr('value', 'submit')
-            ->setStyle(['display'=>'none']);
+            ->setAttr('type', 'hidden');
 
         $cb->set(function () {
             try {

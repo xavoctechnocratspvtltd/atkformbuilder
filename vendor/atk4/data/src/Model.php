@@ -16,7 +16,6 @@ class Model implements \ArrayAccess, \IteratorAggregate
         init as _init;
     }
     use \atk4\core\NameTrait;
-    use \atk4\core\DIContainerTrait;
 
     // {{{ Properties of the class
 
@@ -263,22 +262,20 @@ class Model implements \ArrayAccess, \IteratorAggregate
      */
     public function __construct($persistence = null, $defaults = [])
     {
-        // persistence is optional
+        if (is_string($defaults) || $defaults === false) {
+            $defaults = [$defaults];
+        }
+
         if (is_array($persistence)) {
             $defaults = $persistence;
             $persistence = null;
         }
 
-        if (is_string($defaults) || $defaults === false) {
-            $defaults = ['table' => $defaults];
+        foreach ($defaults as $key => $val) {
+            if ($val !== null) {
+                $this->$key = $val;
+            }
         }
-
-        if (isset($defaults[0])) {
-            $defaults['table'] = $defaults[0];
-            unset($defaults[0]);
-        }
-
-        $this->setDefaults($defaults);
 
         if ($persistence) {
             $persistence->add($this, $defaults);
@@ -293,6 +290,20 @@ class Model implements \ArrayAccess, \IteratorAggregate
                 $el = clone $el;
                 $this->elements[$id] = $el;
                 $el->owner = $this;
+            }
+        }
+    }
+
+    /**
+     * Set default properties of model.
+     *
+     * @param array $defaults
+     */
+    public function setDefaults($defaults)
+    {
+        foreach ($defaults as $key => $val) {
+            if ($val !== null) {
+                $this->$key = $val;
             }
         }
     }
@@ -521,7 +532,6 @@ class Model implements \ArrayAccess, \IteratorAggregate
             $e->addMoreInfo('field', $field);
             $e->addMoreInfo('value', $value);
             $e->addMoreInfo('f', $f);
-
             throw $e;
         }
 
@@ -1203,12 +1213,10 @@ class Model implements \ArrayAccess, \IteratorAggregate
     public function loadBy($field, $value)
     {
         $this->addCondition($field, $value);
-
         try {
             $this->loadAny();
         } catch (\Exception $e) {
             array_pop($this->conditions);
-
             throw $e;
         }
         array_pop($this->conditions);
@@ -1228,12 +1236,10 @@ class Model implements \ArrayAccess, \IteratorAggregate
     public function tryLoadBy($field, $value)
     {
         $this->addCondition($field, $value);
-
         try {
             $this->tryLoadAny();
         } catch (\Exception $e) {
             array_pop($this->conditions);
-
             throw $e;
         }
         array_pop($this->conditions);
